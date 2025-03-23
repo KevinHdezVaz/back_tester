@@ -14,17 +14,18 @@ class AppController extends Controller
 
     public function store(Request $request)
     {
+        // Validar los campos, eliminando la validación del apk
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'category' => 'required|string',
             'logo' => 'required|image|max:2048',
-            'apk' => 'required|file|mimes:apk|max:10240',
         ]);
 
+        // Guardar el logo
         $logoPath = $request->file('logo')->store('logos', 'public');
-        $apkPath = $request->file('apk')->store('apks', 'public');
 
+        // Crear la app sin el apk
         $app = App::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
@@ -32,12 +33,17 @@ class AppController extends Controller
             'description' => $request->description,
             'category' => $request->category,
             'logo_path' => $logoPath,
-            'apk_path' => $apkPath,
             'is_published' => false,
         ]);
 
         return response()->json(['app_id' => $app->id, 'needs_payment' => auth()->user()->credits < 1]);
     }
+
+    public function allApps()
+    {
+        return response()->json(App::all());
+    }
+    
 
     public function publish(App $app)
     {
@@ -47,5 +53,17 @@ class AppController extends Controller
             return response()->json(['message' => 'App publicada con créditos']);
         }
         return response()->json(['message' => 'Necesitas créditos o pagar'], 403);
+    }
+
+    // Nuevo método para obtener una app por ID
+    public function show($id)
+    {
+        $app = App::where('id', $id)->where('is_published', true)->first();
+
+        if (!$app) {
+            return response()->json(['message' => 'App no encontrada o no publicada'], 404);
+        }
+
+        return response()->json($app);
     }
 }
