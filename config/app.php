@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Laravel'), // Puedes cambiar 'Laravel' por el nombre de tu app, por ejemplo, 'AppTester'
 
     /*
     |--------------------------------------------------------------------------
@@ -55,9 +55,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://backtest.aftconta.mx'), // Actualizamos la URL por defecto
 
-    'asset_url' => env('ASSET_URL'),
+    'asset_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Mexico_City', // Cambiamos a una zona horaria más adecuada para tu ubicación (México)
 
     /*
     |--------------------------------------------------------------------------
@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es', // Cambiamos a español, ya que tu app parece estar en español
 
     /*
     |--------------------------------------------------------------------------
@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'es_MX', // Cambiamos a español de México para datos falsos localizados
 
     /*
     |--------------------------------------------------------------------------
@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Laravel\Socialite\SocialiteServiceProvider::class, // Agregamos el proveedor de Socialite
 
         /*
          * Application Service Providers...
@@ -182,7 +183,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, // Agregamos el alias para Socialite
     ])->toArray(),
 
 ];

@@ -1,16 +1,17 @@
 <?php
 
-use TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Auth\GoogleController;
 
  
 // Rutas públicas (no requieren autenticación)
 Route::get('/apps', [AppController::class, 'index']);
 Route::post('/apps/{app}/test', [TestController::class, 'test']);
+Route::post('/auth/google', [GoogleController::class, 'handleGoogleAuth']);
 
 // Rutas protegidas (requieren autenticación)
 Route::middleware('auth:sanctum')->group(function () {
